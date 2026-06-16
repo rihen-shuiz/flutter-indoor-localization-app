@@ -1,5 +1,5 @@
 name: flutter_indoor_localization_app
-description: "A new Flutter project."
+description: "IMU + WiFi RSSI data collection app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -35,10 +35,46 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  # Sensors
+  sensors_plus: ^7.0.0             # IMU (accelerometer, gyroscope, magnetometer)
+  
+  # WiFi
+  wifi_scan: ^0.4.1+2              # WiFi SSID/BSSID scanning
+  network_info_plus: ^8.1.0        # WiFi connection info
+  
+  # Database
+  sqflite: ^2.3.0                  # SQLite
+  path: ^1.8.3                     # File paths
+  
+  # Networking
+  http: ^1.1.0                     # HTTP client
+  dio: ^5.3.0                      # Better HTTP handling
+  
+  # State Management
+  provider: ^6.0.0                 # State management
+  
+  # UI
+  flutter_spinkit: ^5.2.0          # Loading spinners
+  intl: ^0.20.2                    # Date/time formatting
+  
+  # Device Info
+  device_info_plus: ^13.1.0        # Phone model, OS version
+  
+  # Permissions
+  permission_handler: ^11.3.1      # Request sensor/WiFi permissions
+
+  # Annotations
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Tools to generate .freezed.dart and .g.dart files
+  build_runner: ^2.4.9
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
