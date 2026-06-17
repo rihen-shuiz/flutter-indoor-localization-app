@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'imu_reading.dart';
-import 'wifi_scan.dart';
+import 'wifi_reading.dart';
 import 'gt_waypoint.dart';
 
 part 'trajectory.freezed.dart';
@@ -13,7 +13,7 @@ class Trajectory with _$Trajectory {
     required String trajId,
     required TrajectoryMetadata metadata,
     required List<IMUReading> imuReadings,
-    required List<WiFiScan> wifiScans,
+    required List<WiFiReading> wifiScans,
     required List<GTWaypoint> gtWaypoints,
   }) = _Trajectory;
 

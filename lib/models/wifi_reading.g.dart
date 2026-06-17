@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'wifi_scan.dart';
+part of 'wifi_reading.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$WiFiScanImpl _$$WiFiScanImplFromJson(Map<String, dynamic> json) =>
-    _$WiFiScanImpl(
+_$WiFiReadingImpl _$$WiFiReadingImplFromJson(Map<String, dynamic> json) =>
+    _$WiFiReadingImpl(
       ts: (json['ts'] as num).toInt(),
       bssid: json['bssid'] as String,
       ssid: json['ssid'] as String,
@@ -15,7 +15,7 @@ _$WiFiScanImpl _$$WiFiScanImplFromJson(Map<String, dynamic> json) =>
       freq: (json['freq'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$WiFiScanImplToJson(_$WiFiScanImpl instance) =>
+Map<String, dynamic> _$$WiFiReadingImplToJson(_$WiFiReadingImpl instance) =>
     <String, dynamic>{
       'ts': instance.ts,
       'bssid': instance.bssid,

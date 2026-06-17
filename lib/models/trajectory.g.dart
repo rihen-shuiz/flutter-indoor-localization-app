@@ -16,7 +16,7 @@ _$TrajectoryImpl _$$TrajectoryImplFromJson(Map<String, dynamic> json) =>
           .map((e) => IMUReading.fromJson(e as Map<String, dynamic>))
           .toList(),
       wifiScans: (json['wifi_scans'] as List<dynamic>)
-          .map((e) => WiFiScan.fromJson(e as Map<String, dynamic>))
+          .map((e) => WiFiReading.fromJson(e as Map<String, dynamic>))
           .toList(),
       gtWaypoints: (json['gt_waypoints'] as List<dynamic>)
           .map((e) => GTWaypoint.fromJson(e as Map<String, dynamic>))

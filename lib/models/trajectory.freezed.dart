@@ -24,7 +24,7 @@ mixin _$Trajectory {
   String get trajId => throw _privateConstructorUsedError;
   TrajectoryMetadata get metadata => throw _privateConstructorUsedError;
   List<IMUReading> get imuReadings => throw _privateConstructorUsedError;
-  List<WiFiScan> get wifiScans => throw _privateConstructorUsedError;
+  List<WiFiReading> get wifiScans => throw _privateConstructorUsedError;
   List<GTWaypoint> get gtWaypoints => throw _privateConstructorUsedError;
 
   /// Serializes this Trajectory to a JSON map.
@@ -48,7 +48,7 @@ abstract class $TrajectoryCopyWith<$Res> {
     String trajId,
     TrajectoryMetadata metadata,
     List<IMUReading> imuReadings,
-    List<WiFiScan> wifiScans,
+    List<WiFiReading> wifiScans,
     List<GTWaypoint> gtWaypoints,
   });
 
@@ -93,7 +93,7 @@ class _$TrajectoryCopyWithImpl<$Res, $Val extends Trajectory>
             wifiScans: null == wifiScans
                 ? _value.wifiScans
                 : wifiScans // ignore: cast_nullable_to_non_nullable
-                      as List<WiFiScan>,
+                      as List<WiFiReading>,
             gtWaypoints: null == gtWaypoints
                 ? _value.gtWaypoints
                 : gtWaypoints // ignore: cast_nullable_to_non_nullable
@@ -127,7 +127,7 @@ abstract class _$$TrajectoryImplCopyWith<$Res>
     String trajId,
     TrajectoryMetadata metadata,
     List<IMUReading> imuReadings,
-    List<WiFiScan> wifiScans,
+    List<WiFiReading> wifiScans,
     List<GTWaypoint> gtWaypoints,
   });
 
@@ -172,7 +172,7 @@ class __$$TrajectoryImplCopyWithImpl<$Res>
         wifiScans: null == wifiScans
             ? _value._wifiScans
             : wifiScans // ignore: cast_nullable_to_non_nullable
-                  as List<WiFiScan>,
+                  as List<WiFiReading>,
         gtWaypoints: null == gtWaypoints
             ? _value._gtWaypoints
             : gtWaypoints // ignore: cast_nullable_to_non_nullable
@@ -190,7 +190,7 @@ class _$TrajectoryImpl implements _Trajectory {
     required this.trajId,
     required this.metadata,
     required final List<IMUReading> imuReadings,
-    required final List<WiFiScan> wifiScans,
+    required final List<WiFiReading> wifiScans,
     required final List<GTWaypoint> gtWaypoints,
   }) : _imuReadings = imuReadings,
        _wifiScans = wifiScans,
@@ -211,9 +211,9 @@ class _$TrajectoryImpl implements _Trajectory {
     return EqualUnmodifiableListView(_imuReadings);
   }
 
-  final List<WiFiScan> _wifiScans;
+  final List<WiFiReading> _wifiScans;
   @override
-  List<WiFiScan> get wifiScans {
+  List<WiFiReading> get wifiScans {
     if (_wifiScans is EqualUnmodifiableListView) return _wifiScans;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_wifiScans);
@@ -284,7 +284,7 @@ abstract class _Trajectory implements Trajectory {
     required final String trajId,
     required final TrajectoryMetadata metadata,
     required final List<IMUReading> imuReadings,
-    required final List<WiFiScan> wifiScans,
+    required final List<WiFiReading> wifiScans,
     required final List<GTWaypoint> gtWaypoints,
   }) = _$TrajectoryImpl;
 
@@ -298,7 +298,7 @@ abstract class _Trajectory implements Trajectory {
   @override
   List<IMUReading> get imuReadings;
   @override
-  List<WiFiScan> get wifiScans;
+  List<WiFiReading> get wifiScans;
   @override
   List<GTWaypoint> get gtWaypoints;
 

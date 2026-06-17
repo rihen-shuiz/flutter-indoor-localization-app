@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:flutter_indoor_localization_app/models/imu_reading.dart';
 import 'dart:async';
 
-class IMUService {
+class IMUService extends ChangeNotifier {
   static final IMUService _instance = IMUService._internal();
   
   factory IMUService() => _instance;
