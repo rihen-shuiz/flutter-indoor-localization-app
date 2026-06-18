@@ -6,6 +6,7 @@ import 'package:flutter_indoor_localization_app/screens/recording_screen.dart';
 import 'package:flutter_indoor_localization_app/services/imu_service.dart';
 import 'package:flutter_indoor_localization_app/services/wifi_service.dart';
 import 'package:flutter_indoor_localization_app/services/database_service.dart';
+import 'package:flutter_indoor_localization_app/services/ground_truth_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<IMUService>(create: (_) => IMUService()),
         Provider<WiFiService>(create: (_) => WiFiService()),
         Provider<DatabaseService>(create: (_) => DatabaseService()),
+        ChangeNotifierProvider(create: (_) => GroundTruthService())
       ],
       child: MaterialApp(
         title: 'Indoor Localization PDR',

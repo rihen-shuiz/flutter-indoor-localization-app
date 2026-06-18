@@ -41,6 +41,7 @@ _$TrajectoryMetadataImpl _$$TrajectoryMetadataImplFromJson(
   startTime: (json['start_time'] as num).toInt(),
   endTime: (json['end_time'] as num).toInt(),
   pathDescription: json['path_description'] as String,
+  presetPathName: json['preset_path_name'] as String,
   phoneModel: json['phone_model'] as String,
   notes: json['notes'] as String,
 );
@@ -54,6 +55,7 @@ Map<String, dynamic> _$$TrajectoryMetadataImplToJson(
   'start_time': instance.startTime,
   'end_time': instance.endTime,
   'path_description': instance.pathDescription,
+  'preset_path_name': instance.presetPathName,
   'phone_model': instance.phoneModel,
   'notes': instance.notes,
 };

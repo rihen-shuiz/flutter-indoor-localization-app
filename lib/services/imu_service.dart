@@ -26,13 +26,16 @@ class IMUService extends ChangeNotifier {
   final List<IMUReading> _recordedReadings = [];
   bool isRecording = false;
   
-  /// Старт прослушивания датчиков
+  /// Starts streaming Accelerometer, Gyroscope, and Magnetometer data.
+  ///
+  /// * Prevents duplicate streams if already listening.
+  /// * Updates raw axis variables (`ax/ay/az`, `gx/gy/gz`, `mx/my/mz`).
+  /// * Triggers [_notifyListeners()] to refresh the UI on every update.
   Future<void> startListening() async {
-    if (_accelSubscription != null) return; // Защита от повторного запуска
+    if (_accelSubscription != null) return;
 
     print('[IMU] Starting sensor listeners...');
     
-    // В sensors_plus можно указать желаемую частоту (если поддерживает плагин)
     final sensorInterval = SensorInterval.normalInterval; 
 
     _accelSubscription = accelerometerEventStream(samplingPeriod: sensorInterval)
@@ -54,9 +57,8 @@ class IMUService extends ChangeNotifier {
     });
   }
   
-  /// Остановка прослушивания
   void stopListening() {
-    stopRecording(); // На всякий случай останавливаем и запись
+    stopRecording(); 
     
     _accelSubscription?.cancel();
     _gyroSubscription?.cancel();
@@ -69,11 +71,9 @@ class IMUService extends ChangeNotifier {
     print('[IMU] Stopped sensor listeners');
   }
   
-  /// Безопасная проверка доступности датчиков с таймаутом
   Future<bool> areSensorsAvailable() async {
     try {
       const timeout = Duration(milliseconds: 500);
-      // Если датчик не ответит за 500 мс, упадем в catch и вернем false
       await accelerometerEventStream().first.timeout(timeout);
       await gyroscopeEventStream().first.timeout(timeout);
       await magnetometerEventStream().first.timeout(timeout);
@@ -84,14 +84,12 @@ class IMUService extends ChangeNotifier {
     }
   }
   
-  /// Старт записи данных с фиксированной частотой (например, 50 Гц / каждые 20 мс)
   void startRecording({Duration interval = const Duration(milliseconds: 20)}) {
     if (isRecording) return;
     
     _recordedReadings.clear();
     isRecording = true;
     
-    // Вместо записи на каждый чих датчика, берем стабильные срезы по таймеру
     _recordingTimer = Timer.periodic(interval, (_) => _recordSample());
     print('[IMU] Recording started with interval ${interval.inMilliseconds}ms');
   }
@@ -105,7 +103,7 @@ class IMUService extends ChangeNotifier {
     _recordingTimer = null;
     
     print('[IMU] Recording stopped (${_recordedReadings.length} samples)');
-    // Возвращаем копию списка, чтобы никто случайно не испортил внутренние данные
+    // Returning a copy of recorded readings;
     return List.from(_recordedReadings);
   }
   
@@ -121,7 +119,6 @@ class IMUService extends ChangeNotifier {
   }
   
   void _notifyListeners() {
-    // Больше не вызываем здесь _recordSample()! Уведомляем только UI.
     for (final listener in _listeners) {
       listener();
     }

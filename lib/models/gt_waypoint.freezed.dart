@@ -24,7 +24,7 @@ mixin _$GTWaypoint {
   int get ts => throw _privateConstructorUsedError; // timestamp (ms)
   double get x => throw _privateConstructorUsedError; // position (meters)
   double get y => throw _privateConstructorUsedError; // position (meters)
-  double get heading => throw _privateConstructorUsedError;
+  HeadingDirection get heading => throw _privateConstructorUsedError;
 
   /// Serializes this GTWaypoint to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ abstract class $GTWaypointCopyWith<$Res> {
     $Res Function(GTWaypoint) then,
   ) = _$GTWaypointCopyWithImpl<$Res, GTWaypoint>;
   @useResult
-  $Res call({int ts, double x, double y, double heading});
+  $Res call({int ts, double x, double y, HeadingDirection heading});
 }
 
 /// @nodoc
@@ -83,7 +83,7 @@ class _$GTWaypointCopyWithImpl<$Res, $Val extends GTWaypoint>
             heading: null == heading
                 ? _value.heading
                 : heading // ignore: cast_nullable_to_non_nullable
-                      as double,
+                      as HeadingDirection,
           )
           as $Val,
     );
@@ -99,7 +99,7 @@ abstract class _$$GTWaypointImplCopyWith<$Res>
   ) = __$$GTWaypointImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int ts, double x, double y, double heading});
+  $Res call({int ts, double x, double y, HeadingDirection heading});
 }
 
 /// @nodoc
@@ -138,7 +138,7 @@ class __$$GTWaypointImplCopyWithImpl<$Res>
         heading: null == heading
             ? _value.heading
             : heading // ignore: cast_nullable_to_non_nullable
-                  as double,
+                  as HeadingDirection,
       ),
     );
   }
@@ -167,7 +167,7 @@ class _$GTWaypointImpl implements _GTWaypoint {
   final double y;
   // position (meters)
   @override
-  final double heading;
+  final HeadingDirection heading;
 
   @override
   String toString() {
@@ -208,7 +208,7 @@ abstract class _GTWaypoint implements GTWaypoint {
     required final int ts,
     required final double x,
     required final double y,
-    required final double heading,
+    required final HeadingDirection heading,
   }) = _$GTWaypointImpl;
 
   factory _GTWaypoint.fromJson(Map<String, dynamic> json) =
@@ -221,7 +221,7 @@ abstract class _GTWaypoint implements GTWaypoint {
   @override
   double get y; // position (meters)
   @override
-  double get heading;
+  HeadingDirection get heading;
 
   /// Create a copy of GTWaypoint
   /// with the given fields replaced by the non-null parameter values.

@@ -322,6 +322,7 @@ mixin _$TrajectoryMetadata {
   int get startTime => throw _privateConstructorUsedError;
   int get endTime => throw _privateConstructorUsedError;
   String get pathDescription => throw _privateConstructorUsedError;
+  String get presetPathName => throw _privateConstructorUsedError;
   String get phoneModel => throw _privateConstructorUsedError;
   String get notes => throw _privateConstructorUsedError;
 
@@ -349,6 +350,7 @@ abstract class $TrajectoryMetadataCopyWith<$Res> {
     int startTime,
     int endTime,
     String pathDescription,
+    String presetPathName,
     String phoneModel,
     String notes,
   });
@@ -375,6 +377,7 @@ class _$TrajectoryMetadataCopyWithImpl<$Res, $Val extends TrajectoryMetadata>
     Object? startTime = null,
     Object? endTime = null,
     Object? pathDescription = null,
+    Object? presetPathName = null,
     Object? phoneModel = null,
     Object? notes = null,
   }) {
@@ -403,6 +406,10 @@ class _$TrajectoryMetadataCopyWithImpl<$Res, $Val extends TrajectoryMetadata>
             pathDescription: null == pathDescription
                 ? _value.pathDescription
                 : pathDescription // ignore: cast_nullable_to_non_nullable
+                      as String,
+            presetPathName: null == presetPathName
+                ? _value.presetPathName
+                : presetPathName // ignore: cast_nullable_to_non_nullable
                       as String,
             phoneModel: null == phoneModel
                 ? _value.phoneModel
@@ -434,6 +441,7 @@ abstract class _$$TrajectoryMetadataImplCopyWith<$Res>
     int startTime,
     int endTime,
     String pathDescription,
+    String presetPathName,
     String phoneModel,
     String notes,
   });
@@ -459,6 +467,7 @@ class __$$TrajectoryMetadataImplCopyWithImpl<$Res>
     Object? startTime = null,
     Object? endTime = null,
     Object? pathDescription = null,
+    Object? presetPathName = null,
     Object? phoneModel = null,
     Object? notes = null,
   }) {
@@ -488,6 +497,10 @@ class __$$TrajectoryMetadataImplCopyWithImpl<$Res>
             ? _value.pathDescription
             : pathDescription // ignore: cast_nullable_to_non_nullable
                   as String,
+        presetPathName: null == presetPathName
+            ? _value.presetPathName
+            : presetPathName // ignore: cast_nullable_to_non_nullable
+                  as String,
         phoneModel: null == phoneModel
             ? _value.phoneModel
             : phoneModel // ignore: cast_nullable_to_non_nullable
@@ -512,6 +525,7 @@ class _$TrajectoryMetadataImpl implements _TrajectoryMetadata {
     required this.startTime,
     required this.endTime,
     required this.pathDescription,
+    required this.presetPathName,
     required this.phoneModel,
     required this.notes,
   });
@@ -532,13 +546,15 @@ class _$TrajectoryMetadataImpl implements _TrajectoryMetadata {
   @override
   final String pathDescription;
   @override
+  final String presetPathName;
+  @override
   final String phoneModel;
   @override
   final String notes;
 
   @override
   String toString() {
-    return 'TrajectoryMetadata(collector: $collector, building: $building, floor: $floor, startTime: $startTime, endTime: $endTime, pathDescription: $pathDescription, phoneModel: $phoneModel, notes: $notes)';
+    return 'TrajectoryMetadata(collector: $collector, building: $building, floor: $floor, startTime: $startTime, endTime: $endTime, pathDescription: $pathDescription, presetPathName: $presetPathName, phoneModel: $phoneModel, notes: $notes)';
   }
 
   @override
@@ -556,6 +572,8 @@ class _$TrajectoryMetadataImpl implements _TrajectoryMetadata {
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
             (identical(other.pathDescription, pathDescription) ||
                 other.pathDescription == pathDescription) &&
+            (identical(other.presetPathName, presetPathName) ||
+                other.presetPathName == presetPathName) &&
             (identical(other.phoneModel, phoneModel) ||
                 other.phoneModel == phoneModel) &&
             (identical(other.notes, notes) || other.notes == notes));
@@ -571,6 +589,7 @@ class _$TrajectoryMetadataImpl implements _TrajectoryMetadata {
     startTime,
     endTime,
     pathDescription,
+    presetPathName,
     phoneModel,
     notes,
   );
@@ -600,6 +619,7 @@ abstract class _TrajectoryMetadata implements TrajectoryMetadata {
     required final int startTime,
     required final int endTime,
     required final String pathDescription,
+    required final String presetPathName,
     required final String phoneModel,
     required final String notes,
   }) = _$TrajectoryMetadataImpl;
@@ -619,6 +639,8 @@ abstract class _TrajectoryMetadata implements TrajectoryMetadata {
   int get endTime;
   @override
   String get pathDescription;
+  @override
+  String get presetPathName;
   @override
   String get phoneModel;
   @override

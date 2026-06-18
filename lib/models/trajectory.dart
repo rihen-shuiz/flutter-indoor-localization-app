@@ -31,6 +31,7 @@ class TrajectoryMetadata with _$TrajectoryMetadata {
     required int startTime,
     required int endTime,
     required String pathDescription,
+    required String presetPathName,
     required String phoneModel,
     required String notes,
   }) = _TrajectoryMetadata;
