@@ -26,30 +26,42 @@ class WiFiService {
   /// Request WiFi scan permissions and check hardware readiness
   Future<bool> requestPermissions() async {
     try {
+      print('[WiFi] Starting permission request...');
+      
       // For Android 13+, request NEARBY_WIFI_DEVICES permission
       PermissionStatus status;
       if (await Permission.nearbyWifiDevices.isDenied) {
+        print('[WiFi] Requesting NEARBY_WIFI_DEVICES permission...');
         status = await Permission.nearbyWifiDevices.request();
+        print('[WiFi] NEARBY_WIFI_DEVICES status: $status');
       } else {
         status = await Permission.nearbyWifiDevices.status;
+        print('[WiFi] NEARBY_WIFI_DEVICES current status: $status');
       }
+      
       // Fallback to location permission for older Android versions
       if (!status.isGranted) {
+        print('[WiFi] NEARBY_WIFI_DEVICES not granted, trying LOCATION...');
         status = await Permission.location.request();
+        print('[WiFi] LOCATION status: $status');
       }
       
       if (!status.isGranted) {
-        print('[WiFi] Permission denied');
+        print('[WiFi] Permission denied: $status');
         return false;
       }
       
+      print('[WiFi] Checking hardware support...');
       // Check if hardware supports WiFi scanning
       final canGetResults = await WiFiScan.instance.canGetScannedResults();
+      print('[WiFi] canGetScannedResults: $canGetResults');
+      
       if (canGetResults != CanGetScannedResults.yes) {
         print('[WiFi] Cannot get scanned networks. Reason: $canGetResults');
         return false;
       }
       
+      print('[WiFi] All permissions granted!');
       return true;
     } catch (e) {
       print('[WiFi] Permission request failed: $e');
