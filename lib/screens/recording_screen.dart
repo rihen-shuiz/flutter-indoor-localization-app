@@ -58,7 +58,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
   
   /// Activates recording mode across IMU and Wi-Fi services, resets the elapsed counter.
   /// Starts a 1-second background timer to update the duration on screen.
-  void _startRecording() {
+  Future <void> _startRecording() async {
     if (_selectedTrajectory == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -72,6 +72,12 @@ class _RecordingScreenState extends State<RecordingScreen> {
     setState(() => isRecording = true);
 
     try {
+      // Request WiFi permission before recording
+      final hasWiFiPermission = await wifiService.requestPermissions();
+      if (!hasWiFiPermission) {
+        throw Exception('WiFi permissions denied. Cannot record scans.');
+      }
+      
       imuService.startRecording();
       wifiService.startRecording();
       gtService.initializeSession(_selectedTrajectory!);
