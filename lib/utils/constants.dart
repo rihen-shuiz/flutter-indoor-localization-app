@@ -1,6 +1,10 @@
 import 'package:flutter_indoor_localization_app/models/trajectory_blueprint.dart';
 
 class AppConstants {
+  /// Ground-truth waypoint spacing during segment interpolation (ms).
+  /// 100 ms ≈ 10 Hz — aligns with typical Wi-Fi scan cadence and validation density checks.
+  static const int gtWaypointIntervalMs = 100;
+
   static const List<TrajectoryBlueprint> presetTrajectories = [
     TrajectoryBlueprint(
       name: "The First Trajectory",

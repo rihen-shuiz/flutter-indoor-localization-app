@@ -8,6 +8,7 @@ import 'package:flutter_indoor_localization_app/services/database_service.dart';
 import 'package:flutter_indoor_localization_app/screens/review_screen.dart';
 import 'package:flutter_indoor_localization_app/models/trajectory_blueprint.dart';
 import 'package:flutter_indoor_localization_app/utils/constants.dart';
+import 'package:flutter_indoor_localization_app/models/gt_waypoint.dart';
 import 'package:flutter_indoor_localization_app/services/ground_truth_service.dart';
 
 class RecordingScreen extends StatefulWidget {
@@ -42,6 +43,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
 
     imuService.startListening();
     imuService.addListener(_throttledUiUpdate);
+    gtService.addListener(_throttledUiUpdate);
   }
 
   /// Throttles UI updates to ~10Hz (every 100ms) instead of 50Hz.
@@ -68,8 +70,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
     }
 
     setState(() => isRecording = true);
-    final String currentTrajId = 'traj_${DateTime.now().millisecondsSinceEpoch}';
-    
+
     try {
       imuService.startRecording();
       wifiService.startRecording();
@@ -82,9 +83,6 @@ class _RecordingScreenState extends State<RecordingScreen> {
       );
       return;
     }
-    
-    final int startTimestamp = DateTime.now().millisecondsSinceEpoch;
-    final String initialHeading = _selectedTrajectory!.segments.first.direction.name;
     
     elapsedSeconds = 0;
     elapsedTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -101,23 +99,44 @@ class _RecordingScreenState extends State<RecordingScreen> {
   void _stopRecording() {
     elapsedTimer?.cancel();
     elapsedTimer = null;
-    
+
     final imuReadings = imuService.stopRecording();
     final wifiScans = wifiService.stopRecording();
-    
+    final List<GTWaypoint> gtWaypoints = gtService.stopSession();
+
     setState(() => isRecording = false);
-    gtService.clearSession();
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => ReviewScreen(
           imuReadings: imuReadings,
           wifiScans: wifiScans,
+          gtWaypoints: gtWaypoints,
         ),
       ),
     );
   }
+
+  void _markTurn() {
+    if (!isRecording || gtService.pathComplete) return;
+
+    gtService.nextSegment();
+
+    final segment = gtService.currentSegment;
+    final message = gtService.pathComplete
+        ? 'Path complete — ${_formatWaypointCount(gtService.waypointCount)} GT points'
+        : segment != null
+            ? 'Turn recorded → walk ${segment.fromNode} → ${segment.toNode} '
+              '(${segment.direction.name}, ${segment.distanceInMeters}m)'
+            : 'Turn recorded';
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  String _formatWaypointCount(int count) => '$count waypoint${count == 1 ? '' : 's'}';
   
   @override
   Widget build(BuildContext context) {
@@ -133,11 +152,14 @@ class _RecordingScreenState extends State<RecordingScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              if (isRecording)
+              if (isRecording) ...[
                 Text(
-                  'Elapsed: _formatDuration(elapsedSeconds)',
+                  'Elapsed: ${_formatDuration(elapsedSeconds)}',
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
+                const SizedBox(height: 8),
+                _GroundTruthStatusCard(gtService: gtService),
+              ],
               
               DropdownButtonFormField<TrajectoryBlueprint>(
                 initialValue: _selectedTrajectory,
@@ -170,8 +192,10 @@ class _RecordingScreenState extends State<RecordingScreen> {
               
               const SizedBox(height: 20),
               
-              Text('IMU samples: imuService.recordedReadings.length} ✓'),
-              Text('WiFi scans: wifiService.recordedScans.length} ✓'),
+              Text('IMU samples: ${imuService.recordedReadings.length} ✓'),
+              Text('WiFi scans: ${wifiService.recordedScans.length} ✓'),
+              if (isRecording)
+                Text('GT waypoints: ${gtService.waypointCount} ✓'),
               
               const Spacer(),
               
@@ -185,9 +209,9 @@ class _RecordingScreenState extends State<RecordingScreen> {
                     )
                   else ...[
                     ElevatedButton(
-                      onPressed: _showWaypointDialog,
+                      onPressed: gtService.pathComplete ? null : _markTurn,
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                      child: const Text('MARK WAYPOINT'),
+                      child: Text(gtService.pathComplete ? 'PATH DONE' : 'TURN'),
                     ),
                     ElevatedButton(
                       onPressed: _stopRecording,
@@ -204,10 +228,6 @@ class _RecordingScreenState extends State<RecordingScreen> {
     );
   }
   
-  void _showWaypointDialog() {
-    // Left empty for your upcoming manual/automatic GT integration mapping
-  }
-  
   String _formatDuration(int seconds) {
     final mins = seconds ~/ 60;
     final secs = seconds % 60;
@@ -217,9 +237,44 @@ class _RecordingScreenState extends State<RecordingScreen> {
   @override
   void dispose() {
     imuService.removeListener(_throttledUiUpdate);
+    gtService.removeListener(_throttledUiUpdate);
     imuService.stopListening();
     elapsedTimer?.cancel(); // Critical to prevent background execution memory leaks
     super.dispose();
+  }
+}
+
+class _GroundTruthStatusCard extends StatelessWidget {
+  final GroundTruthService gtService;
+
+  const _GroundTruthStatusCard({required this.gtService});
+
+  @override
+  Widget build(BuildContext context) {
+    final segment = gtService.currentSegment;
+    if (segment == null) return const SizedBox.shrink();
+
+    return Card(
+      color: Colors.orange.shade50,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              gtService.pathComplete ? 'Ground truth: path complete' : 'Current segment',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 4),
+            if (!gtService.pathComplete) ...[
+              Text('${segment.fromNode} → ${segment.toNode}'),
+              Text('Heading: ${segment.direction.name}, length: ${segment.distanceInMeters} m'),
+            ],
+            Text('Generated GT points: ${gtService.waypointCount}'),
+          ],
+        ),
+      ),
+    );
   }
 }
 

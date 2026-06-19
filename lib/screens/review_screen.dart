@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_indoor_localization_app/models/gt_waypoint.dart';
 
 class ReviewScreen extends StatelessWidget {
-  // Using List<dynamic> here as placeholders. Replace with your actual IMU/WiFi data models later.
   final List<dynamic> imuReadings;
   final List<dynamic> wifiScans;
+  final List<GTWaypoint> gtWaypoints;
 
   const ReviewScreen({
     Key? key,
     required this.imuReadings,
     required this.wifiScans,
+    required this.gtWaypoints,
   }) : super(key: key);
 
   @override
@@ -40,6 +42,9 @@ class ReviewScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 18)),
                       const SizedBox(height: 8),
                       Text('Wi-Fi Scans Captured: ${wifiScans.length}', 
+                        style: const TextStyle(fontSize: 18)),
+                      const SizedBox(height: 8),
+                      Text('Ground Truth Waypoints: ${gtWaypoints.length}',
                         style: const TextStyle(fontSize: 18)),
                     ],
                   ),

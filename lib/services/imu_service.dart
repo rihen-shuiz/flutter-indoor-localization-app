@@ -25,6 +25,8 @@ class IMUService extends ChangeNotifier {
   final List<void Function()> _listeners = [];
   final List<IMUReading> _recordedReadings = [];
   bool isRecording = false;
+
+  List<IMUReading> get recordedReadings => List.unmodifiable(_recordedReadings);
   
   /// Starts streaming Accelerometer, Gyroscope, and Magnetometer data.
   ///
