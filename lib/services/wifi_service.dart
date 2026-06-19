@@ -26,12 +26,20 @@ class WiFiService {
   /// Request WiFi scan permissions and check hardware readiness
   Future<bool> requestPermissions() async {
     try {
-      // Request NEARBY_WIFI_DEVICES permission (Android 13+)
-      // or ACCESS_FINE_LOCATION (Android 12 and below)
-      final status = await Permission.location.request();
+      // For Android 13+, request NEARBY_WIFI_DEVICES permission
+      PermissionStatus status;
+      if (await Permission.nearbyWifiDevices.isDenied) {
+        status = await Permission.nearbyWifiDevices.request();
+      } else {
+        status = await Permission.nearbyWifiDevices.status;
+      }
+      // Fallback to location permission for older Android versions
+      if (!status.isGranted) {
+        status = await Permission.location.request();
+      }
       
       if (!status.isGranted) {
-        print('[WiFi] Location permission denied');
+        print('[WiFi] Permission denied');
         return false;
       }
       
