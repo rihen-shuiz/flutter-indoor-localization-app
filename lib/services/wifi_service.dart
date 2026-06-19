@@ -84,7 +84,7 @@ class WiFiService {
   }
   
   /// Start periodic WiFi collection
-  void startRecording({Duration interval = const Duration(seconds: 3)}) {
+  void startRecording({Duration interval = const Duration(seconds: 5)}) {
     if (isRecording) return; // Guard against duplicate timer generation
 
     _recordedScans.clear();
@@ -106,8 +106,11 @@ class WiFiService {
       // Optional: Request Android/iOS to actively perform a fresh hardware scan.
       // Note: Subject to aggressive OS throttling!
       final canStartScan = await WiFiScan.instance.canStartScan();
+      print('[WiFi] canStartScan: $canStartScan');
       if (canStartScan == CanStartScan.yes) {
         await WiFiScan.instance.startScan();
+      } else {
+        print('[WiFi] Fresh scan throttled/denied, using cached results');
       }
 
       final aps = await scanNetworks();
