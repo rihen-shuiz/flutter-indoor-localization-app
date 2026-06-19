@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_indoor_localization_app/services/imu_service.dart';
 import 'package:flutter_indoor_localization_app/services/wifi_service.dart';
-import 'package:flutter_indoor_localization_app/services/database_service.dart';
 import 'package:flutter_indoor_localization_app/screens/review_screen.dart';
+import 'package:flutter_indoor_localization_app/services/csv_export_service.dart';
 import 'package:flutter_indoor_localization_app/models/trajectory_blueprint.dart';
 import 'package:flutter_indoor_localization_app/utils/constants.dart';
 import 'package:flutter_indoor_localization_app/models/gt_waypoint.dart';
@@ -21,8 +21,8 @@ class RecordingScreen extends StatefulWidget {
 class _RecordingScreenState extends State<RecordingScreen> {
   late final IMUService imuService;
   late final WiFiService wifiService;
-  late final DatabaseService dbService;
   late final GroundTruthService gtService;
+  bool _isExporting = false;
   
   bool isRecording = false;
   int elapsedSeconds = 0;
@@ -38,7 +38,6 @@ class _RecordingScreenState extends State<RecordingScreen> {
     // Use Provider to fetch dependencies safely
     imuService = context.read<IMUService>();
     wifiService = context.read<WiFiService>();
-    dbService = context.read<DatabaseService>();
     gtService = context.read<GroundTruthService>();
 
     imuService.startListening();
@@ -96,26 +95,59 @@ class _RecordingScreenState extends State<RecordingScreen> {
     );
   }
   
-  void _stopRecording() {
+  Future<void> _stopRecording() async {
+    if (_isExporting) return;
+
     elapsedTimer?.cancel();
     elapsedTimer = null;
 
     final imuReadings = imuService.stopRecording();
     final wifiScans = wifiService.stopRecording();
+    final pathComplete = gtService.pathComplete;
     final List<GTWaypoint> gtWaypoints = gtService.stopSession();
+    final trajectoryName = _selectedTrajectory?.name ?? 'session';
 
-    setState(() => isRecording = false);
+    setState(() {
+      isRecording = false;
+      _isExporting = true;
+    });
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ReviewScreen(
-          imuReadings: imuReadings,
-          wifiScans: wifiScans,
-          gtWaypoints: gtWaypoints,
+    try {
+      final exportResult = await CsvExportService.exportSession(
+        sessionLabel: trajectoryName,
+        imuReadings: imuReadings,
+        wifiScans: wifiScans,
+        gtWaypoints: gtWaypoints,
+      );
+
+      if (!mounted) return;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ReviewScreen(
+            imuReadings: imuReadings,
+            wifiScans: wifiScans,
+            gtWaypoints: gtWaypoints,
+            exportResult: exportResult,
+            pathComplete: pathComplete,
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to export CSV files: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isExporting = false);
+      }
+    }
   }
 
   void _markTurn() {
@@ -214,9 +246,9 @@ class _RecordingScreenState extends State<RecordingScreen> {
                       child: Text(gtService.pathComplete ? 'PATH DONE' : 'TURN'),
                     ),
                     ElevatedButton(
-                      onPressed: _stopRecording,
+                      onPressed: _isExporting ? null : _stopRecording,
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Text('STOP'),
+                      child: Text(_isExporting ? 'EXPORTING...' : 'STOP'),
                     ),
                   ]
                 ],
