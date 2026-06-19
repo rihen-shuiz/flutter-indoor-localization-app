@@ -2,6 +2,7 @@ import 'package:wifi_scan/wifi_scan.dart';
 import 'dart:async';
 
 import 'package:flutter_indoor_localization_app/models/wifi_reading.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class WiFiService {
   static final WiFiService _instance = WiFiService._internal();
@@ -25,15 +26,25 @@ class WiFiService {
   /// Request WiFi scan permissions and check hardware readiness
   Future<bool> requestPermissions() async {
     try {
-      // The API returns an Enum, not a boolean
+      // Request NEARBY_WIFI_DEVICES permission (Android 13+)
+      // or ACCESS_FINE_LOCATION (Android 12 and below)
+      final status = await Permission.location.request();
+      
+      if (!status.isGranted) {
+        print('[WiFi] Location permission denied');
+        return false;
+      }
+      
+      // Check if hardware supports WiFi scanning
       final canGetResults = await WiFiScan.instance.canGetScannedResults();
       if (canGetResults != CanGetScannedResults.yes) {
         print('[WiFi] Cannot get scanned networks. Reason: $canGetResults');
         return false;
       }
+      
       return true;
     } catch (e) {
-      print('[WiFi] Permission check failed: $e');
+      print('[WiFi] Permission request failed: $e');
       return false;
     }
   }
