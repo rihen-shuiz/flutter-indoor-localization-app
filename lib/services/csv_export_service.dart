@@ -49,9 +49,10 @@ class CsvExportService {
     );
     await sessionDir.create(recursive: true);
 
-    final imuPath = p.join(sessionDir.path, 'imu.csv');
-    final wifiPath = p.join(sessionDir.path, 'wifi.csv');
-    final trajectoryPath = p.join(sessionDir.path, 'trajectory.csv');
+    final imuPath = p.join(sessionDir.path, 'imu_${safeLabel}_$stamp.csv');
+    final wifiPath = p.join(sessionDir.path, 'wifi_${safeLabel}_$stamp.csv');
+    final trajectoryPath = p.join(
+        sessionDir.path, 'trajectory_${safeLabel}_$stamp.csv');
 
     await File(imuPath).writeAsString(_buildImuCsv(sortedImu));
     await File(wifiPath).writeAsString(_buildWifiCsv(sortedWifi));
