@@ -10,6 +10,7 @@ import 'package:flutter_indoor_localization_app/models/trajectory_blueprint.dart
 import 'package:flutter_indoor_localization_app/utils/constants.dart';
 import 'package:flutter_indoor_localization_app/models/gt_waypoint.dart';
 import 'package:flutter_indoor_localization_app/services/ground_truth_service.dart';
+import 'package:share_plus/share_plus.dart';
 
 class RecordingScreen extends StatefulWidget {
   const RecordingScreen({Key? key}) : super(key: key);
@@ -119,6 +120,22 @@ class _RecordingScreenState extends State<RecordingScreen> {
         wifiScans: wifiScans,
         gtWaypoints: gtWaypoints,
       );
+
+      if (!mounted) return;
+
+      if (exportResult != null){
+        final files = [
+          XFile(exportResult.imuPath),
+          XFile(exportResult.wifiPath),
+          XFile(exportResult.trajectoryPath),
+        ];
+        await SharePlus.instance.share(
+          ShareParams(
+            files: files, 
+            text: 'All input readings from the session: $trajectoryName'
+          )
+        );
+      }
 
       if (!mounted) return;
 
