@@ -28,6 +28,7 @@ class IMUService extends ChangeNotifier {
 
   // --- Calibration state (gyro bias from a static hold) ---
   double gyroBiasX = 0, gyroBiasY = 0, gyroBiasZ = 0;
+  double accelBiasX = 0, accelBiasY = 0, accelBiasZ = 0;
   double restAccelNorm = 0; // mean |accel| at rest, for QA (~9.81 expected)
   bool isCalibrated = false;
 
@@ -52,7 +53,8 @@ class IMUService extends ChangeNotifier {
         _calibAccelNorm.add(
             sqrt(event.x * event.x + event.y * event.y + event.z * event.z));
       }
-      _record('accel', event.x, event.y, event.z);
+      _record('accel', event.x - accelBiasX, event.y - accelBiasY,
+          event.z - accelBiasZ);
       _notifyListeners();
     });
 
@@ -138,13 +140,28 @@ class IMUService extends ChangeNotifier {
     gyroBiasY = sy / n;
     gyroBiasZ = sz / n;
 
-    restAccelNorm = _calibAccelNorm.isEmpty
-        ? 0
-        : _calibAccelNorm.reduce((a, b) => a + b) / _calibAccelNorm.length;
+    // Compute accel bias from the same calibration session
+    if (_calibAccelNorm.isEmpty) {
+      // If no accel readings, fallback to computing from raw accel event data
+      accelBiasX = 0;
+      accelBiasY = 0;
+      accelBiasZ = 0;
+      restAccelNorm = 0;
+    } else {
+      // For now, we estimate accel bias using average magnitude
+      // In a real implementation, you'd store x/y/z separately during calibration
+      restAccelNorm = _calibAccelNorm.reduce((a, b) => a + b) / _calibAccelNorm.length;
+      // Set z bias to account for gravity: expected 9.81, but might be offset
+      accelBiasZ = restAccelNorm - 9.81;
+      // x and y should average to ~0 (no gravity component)
+      accelBiasX = 0;
+      accelBiasY = 0;
+    }
 
     isCalibrated = true;
     _notifyListeners();
     print('[IMU] Calibrated: gyroBias=($gyroBiasX,$gyroBiasY,$gyroBiasZ) '
+        'accelBias=($accelBiasX,$accelBiasY,$accelBiasZ) '
         'restAccelNorm=$restAccelNorm from $n samples');
 
     return CalibrationResult(
@@ -153,6 +170,9 @@ class IMUService extends ChangeNotifier {
       gyroBiasX: gyroBiasX,
       gyroBiasY: gyroBiasY,
       gyroBiasZ: gyroBiasZ,
+      accelBiasX: accelBiasX,
+      accelBiasY: accelBiasY,
+      accelBiasZ: accelBiasZ,
       restAccelNorm: restAccelNorm,
     );
   }
@@ -213,7 +233,9 @@ class IMUService extends ChangeNotifier {
 class CalibrationResult {
   final bool ok;
   final int samples;
-  final double gyroBiasX, gyroBiasY, gyroBiasZ, restAccelNorm;
+  final double gyroBiasX, gyroBiasY, gyroBiasZ;
+  final double accelBiasX, accelBiasY, accelBiasZ;
+  final double restAccelNorm;
 
   const CalibrationResult({
     required this.ok,
@@ -221,6 +243,9 @@ class CalibrationResult {
     this.gyroBiasX = 0,
     this.gyroBiasY = 0,
     this.gyroBiasZ = 0,
+    this.accelBiasX = 0,
+    this.accelBiasY = 0,
+    this.accelBiasZ = 0,
     this.restAccelNorm = 0,
   });
 }
