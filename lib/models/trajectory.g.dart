@@ -6,24 +6,23 @@ part of 'trajectory.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TrajectoryImpl _$$TrajectoryImplFromJson(Map<String, dynamic> json) =>
-    _$TrajectoryImpl(
-      trajId: json['traj_id'] as String,
-      metadata: TrajectoryMetadata.fromJson(
-        json['metadata'] as Map<String, dynamic>,
-      ),
-      imuReadings: (json['imu_readings'] as List<dynamic>)
-          .map((e) => IMUReading.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      wifiScans: (json['wifi_scans'] as List<dynamic>)
-          .map((e) => WiFiReading.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      gtWaypoints: (json['gt_waypoints'] as List<dynamic>)
-          .map((e) => GTWaypoint.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+_Trajectory _$TrajectoryFromJson(Map<String, dynamic> json) => _Trajectory(
+  trajId: json['traj_id'] as String,
+  metadata: TrajectoryMetadata.fromJson(
+    json['metadata'] as Map<String, dynamic>,
+  ),
+  imuReadings: (json['imu_readings'] as List<dynamic>)
+      .map((e) => IMUReading.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  wifiScans: (json['wifi_scans'] as List<dynamic>)
+      .map((e) => WiFiReading.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  gtWaypoints: (json['gt_waypoints'] as List<dynamic>)
+      .map((e) => GTWaypoint.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
-Map<String, dynamic> _$$TrajectoryImplToJson(_$TrajectoryImpl instance) =>
+Map<String, dynamic> _$TrajectoryToJson(_Trajectory instance) =>
     <String, dynamic>{
       'traj_id': instance.trajId,
       'metadata': instance.metadata,
@@ -32,30 +31,28 @@ Map<String, dynamic> _$$TrajectoryImplToJson(_$TrajectoryImpl instance) =>
       'gt_waypoints': instance.gtWaypoints,
     };
 
-_$TrajectoryMetadataImpl _$$TrajectoryMetadataImplFromJson(
-  Map<String, dynamic> json,
-) => _$TrajectoryMetadataImpl(
-  collector: json['collector'] as String,
-  building: json['building'] as String,
-  floor: (json['floor'] as num).toInt(),
-  startTime: (json['start_time'] as num).toInt(),
-  endTime: (json['end_time'] as num).toInt(),
-  pathDescription: json['path_description'] as String,
-  presetPathName: json['preset_path_name'] as String,
-  phoneModel: json['phone_model'] as String,
-  notes: json['notes'] as String,
-);
+_TrajectoryMetadata _$TrajectoryMetadataFromJson(Map<String, dynamic> json) =>
+    _TrajectoryMetadata(
+      collector: json['collector'] as String,
+      building: json['building'] as String,
+      floor: (json['floor'] as num).toInt(),
+      startTime: (json['start_time'] as num).toInt(),
+      endTime: (json['end_time'] as num).toInt(),
+      pathDescription: json['path_description'] as String,
+      presetPathName: json['preset_path_name'] as String,
+      phoneModel: json['phone_model'] as String,
+      notes: json['notes'] as String,
+    );
 
-Map<String, dynamic> _$$TrajectoryMetadataImplToJson(
-  _$TrajectoryMetadataImpl instance,
-) => <String, dynamic>{
-  'collector': instance.collector,
-  'building': instance.building,
-  'floor': instance.floor,
-  'start_time': instance.startTime,
-  'end_time': instance.endTime,
-  'path_description': instance.pathDescription,
-  'preset_path_name': instance.presetPathName,
-  'phone_model': instance.phoneModel,
-  'notes': instance.notes,
-};
+Map<String, dynamic> _$TrajectoryMetadataToJson(_TrajectoryMetadata instance) =>
+    <String, dynamic>{
+      'collector': instance.collector,
+      'building': instance.building,
+      'floor': instance.floor,
+      'start_time': instance.startTime,
+      'end_time': instance.endTime,
+      'path_description': instance.pathDescription,
+      'preset_path_name': instance.presetPathName,
+      'phone_model': instance.phoneModel,
+      'notes': instance.notes,
+    };

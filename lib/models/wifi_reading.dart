@@ -4,7 +4,7 @@ part 'wifi_reading.freezed.dart';
 part 'wifi_reading.g.dart';
 
 @freezed
-class WiFiReading with _$WiFiReading {
+abstract class WiFiReading with _$WiFiReading {
   const factory WiFiReading({
     required int ts,
     required String bssid,

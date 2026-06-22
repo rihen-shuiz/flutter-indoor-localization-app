@@ -3,21 +3,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'imu_reading.freezed.dart';
 part 'imu_reading.g.dart';
 
+/// One row per individual sensor event (Format A).
+/// `sensor` is 'accel' | 'gyro' | 'mag'; `ts` is the arrival time of THAT
+/// event only — channels are never fused into a single fabricated timestamp.
 @freezed
-class IMUReading with _$IMUReading {
+abstract class IMUReading with _$IMUReading {
   const factory IMUReading({
     required int ts,
-    required double ax,
-    required double ay,
-    required double az,
-    required double gx,
-    required double gy,
-    required double gz,
-    required double mx,
-    required double my,
-    required double mz,
+    required String sensor,
+    required double x,
+    required double y,
+    required double z,
   }) = _IMUReading;
 
-  factory IMUReading.fromJson(Map<String, dynamic> json) => 
+  factory IMUReading.fromJson(Map<String, dynamic> json) =>
       _$IMUReadingFromJson(json);
 }

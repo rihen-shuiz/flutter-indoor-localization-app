@@ -6,15 +6,14 @@ part of 'gt_waypoint.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GTWaypointImpl _$$GTWaypointImplFromJson(Map<String, dynamic> json) =>
-    _$GTWaypointImpl(
-      ts: (json['ts'] as num).toInt(),
-      x: (json['x'] as num).toDouble(),
-      y: (json['y'] as num).toDouble(),
-      heading: $enumDecode(_$HeadingDirectionEnumMap, json['heading']),
-    );
+_GTWaypoint _$GTWaypointFromJson(Map<String, dynamic> json) => _GTWaypoint(
+  ts: (json['ts'] as num).toInt(),
+  x: (json['x'] as num).toDouble(),
+  y: (json['y'] as num).toDouble(),
+  heading: $enumDecode(_$HeadingDirectionEnumMap, json['heading']),
+);
 
-Map<String, dynamic> _$$GTWaypointImplToJson(_$GTWaypointImpl instance) =>
+Map<String, dynamic> _$GTWaypointToJson(_GTWaypoint instance) =>
     <String, dynamic>{
       'ts': instance.ts,
       'x': instance.x,

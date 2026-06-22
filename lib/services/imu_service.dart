@@ -9,22 +9,17 @@ class IMUService extends ChangeNotifier {
   factory IMUService() => _instance;
   IMUService._internal();
 
+  // ~100 Hz target; real devices may cap this.
+  static const Duration samplingPeriod = Duration(milliseconds: 10);
+
   StreamSubscription<AccelerometerEvent>? _accelSubscription;
   StreamSubscription<GyroscopeEvent>? _gyroSubscription;
   StreamSubscription<MagnetometerEvent>? _magSubscription;
 
-  Timer? _recordingTimer;
-
+  // Latest values, kept only for the live UI readout.
   double ax = 0, ay = 0, az = 0;
   double gx = 0, gy = 0, gz = 0;
   double mx = 0, my = 0, mz = 0;
-
-  int _accelVersion = 0;
-  int _gyroVersion = 0;
-  int _magVersion = 0;
-  int _recordedAccelVersion = 0;
-  int _recordedGyroVersion = 0;
-  int _recordedMagVersion = 0;
 
   final List<void Function()> _listeners = [];
   final List<IMUReading> _recordedReadings = [];
@@ -37,32 +32,32 @@ class IMUService extends ChangeNotifier {
 
     print('[IMU] Starting sensor listeners...');
 
-    final sensorInterval = SensorInterval.normalInterval;
-
-    _accelSubscription = accelerometerEventStream(samplingPeriod: sensorInterval)
-        .listen((AccelerometerEvent event) {
+    _accelSubscription =
+        accelerometerEventStream(samplingPeriod: samplingPeriod)
+            .listen((AccelerometerEvent event) {
       ax = event.x;
       ay = event.y;
       az = event.z;
-      _accelVersion++;
+      _record('accel', event.x, event.y, event.z);
       _notifyListeners();
     });
 
-    _gyroSubscription = gyroscopeEventStream(samplingPeriod: sensorInterval)
+    _gyroSubscription = gyroscopeEventStream(samplingPeriod: samplingPeriod)
         .listen((GyroscopeEvent event) {
       gx = event.x;
       gy = event.y;
       gz = event.z;
-      _gyroVersion++;
+      _record('gyro', event.x, event.y, event.z);
       _notifyListeners();
     });
 
-    _magSubscription = magnetometerEventStream(samplingPeriod: sensorInterval)
-        .listen((MagnetometerEvent event) {
+    _magSubscription =
+        magnetometerEventStream(samplingPeriod: samplingPeriod)
+            .listen((MagnetometerEvent event) {
       mx = event.x;
       my = event.y;
       mz = event.z;
-      _magVersion++;
+      _record('mag', event.x, event.y, event.z);
       _notifyListeners();
     });
   }
@@ -94,54 +89,33 @@ class IMUService extends ChangeNotifier {
     }
   }
 
-  void startRecording({Duration interval = const Duration(milliseconds: 20)}) {
+  void startRecording() {
     if (isRecording) return;
-
     _recordedReadings.clear();
-    _recordedAccelVersion = _accelVersion;
-    _recordedGyroVersion = _gyroVersion;
-    _recordedMagVersion = _magVersion;
     isRecording = true;
-
-    _recordingTimer = Timer.periodic(interval, (_) => _recordSample());
-    print('[IMU] Recording started with interval ${interval.inMilliseconds}ms');
+    print('[IMU] Recording started (per-sensor, '
+        '${samplingPeriod.inMilliseconds}ms target)');
   }
 
   List<IMUReading> stopRecording() {
     if (!isRecording) return [];
-
     isRecording = false;
-    _recordingTimer?.cancel();
-    _recordingTimer = null;
-
     print('[IMU] Recording stopped (${_recordedReadings.length} samples)');
     return List.from(_recordedReadings);
   }
 
-  void _recordSample() {
-    final bool allSensorsFresh =
-        _accelVersion > _recordedAccelVersion &&
-        _gyroVersion > _recordedGyroVersion &&
-        _magVersion > _recordedMagVersion;
-
-    if (!allSensorsFresh) return;
-
-    _recordedAccelVersion = _accelVersion;
-    _recordedGyroVersion = _gyroVersion;
-    _recordedMagVersion = _magVersion;
-
+  /// Appends a single sensor event with its own arrival timestamp.
+  /// Wall-clock now() keeps IMU comparable to WiFi/GT (same clock) and
+  /// avoids cross-platform ambiguity of event.timestamp's epoch.
+  void _record(String sensor, double x, double y, double z) {
+    if (!isRecording) return;
     _recordedReadings.add(
       IMUReading(
         ts: DateTime.now().millisecondsSinceEpoch,
-        ax: ax,
-        ay: ay,
-        az: az,
-        gx: gx,
-        gy: gy,
-        gz: gz,
-        mx: mx,
-        my: my,
-        mz: mz,
+        sensor: sensor,
+        x: x,
+        y: y,
+        z: z,
       ),
     );
   }

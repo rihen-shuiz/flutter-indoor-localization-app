@@ -6,16 +6,15 @@ part of 'wifi_reading.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$WiFiReadingImpl _$$WiFiReadingImplFromJson(Map<String, dynamic> json) =>
-    _$WiFiReadingImpl(
-      ts: (json['ts'] as num).toInt(),
-      bssid: json['bssid'] as String,
-      ssid: json['ssid'] as String,
-      rssi: (json['rssi'] as num).toInt(),
-      freq: (json['freq'] as num).toInt(),
-    );
+_WiFiReading _$WiFiReadingFromJson(Map<String, dynamic> json) => _WiFiReading(
+  ts: (json['ts'] as num).toInt(),
+  bssid: json['bssid'] as String,
+  ssid: json['ssid'] as String,
+  rssi: (json['rssi'] as num).toInt(),
+  freq: (json['freq'] as num).toInt(),
+);
 
-Map<String, dynamic> _$$WiFiReadingImplToJson(_$WiFiReadingImpl instance) =>
+Map<String, dynamic> _$WiFiReadingToJson(_WiFiReading instance) =>
     <String, dynamic>{
       'ts': instance.ts,
       'bssid': instance.bssid,

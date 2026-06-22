@@ -62,10 +62,10 @@ dependencies:
   device_info_plus: ^13.1.0        # Phone model, OS version
   
   # Permissions
-  permission_handler: ^11.3.1      # Request sensor/WiFi permissions
+  permission_handler: ^12.0.3      # Request sensor/WiFi permissions
 
   # Annotations
-  freezed_annotation: ^2.4.1
+  freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   share_plus: ^13.1.0
 
@@ -75,7 +75,7 @@ dev_dependencies:
 
   # Tools to generate .freezed.dart and .g.dart files
   build_runner: ^2.4.9
-  freezed: ^2.5.2
+  freezed: ^4.0.0-dev.3
   json_serializable: ^6.8.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

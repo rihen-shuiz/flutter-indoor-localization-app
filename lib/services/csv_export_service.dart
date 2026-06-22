@@ -70,13 +70,10 @@ class CsvExportService {
   }
 
   static String _buildImuCsv(List<IMUReading> readings) {
-    final buffer = StringBuffer('ts,ax,ay,az,gx,gy,gz,mx,my,mz\n');
+    final buffer = StringBuffer('ts,sensor,x,y,z\n');
     for (final r in readings) {
       buffer.writeln(
-        '${r.ts},'
-        '${_num(r.ax)},${_num(r.ay)},${_num(r.az)},'
-        '${_num(r.gx)},${_num(r.gy)},${_num(r.gz)},'
-        '${_num(r.mx)},${_num(r.my)},${_num(r.mz)}',
+        '${r.ts},${r.sensor},${_num(r.x)},${_num(r.y)},${_num(r.z)}',
       );
     }
     return buffer.toString();

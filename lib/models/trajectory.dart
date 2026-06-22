@@ -7,7 +7,7 @@ part 'trajectory.freezed.dart';
 part 'trajectory.g.dart';
 
 @freezed
-class Trajectory with _$Trajectory {
+abstract class Trajectory with _$Trajectory {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Trajectory({
     required String trajId,
@@ -22,7 +22,7 @@ class Trajectory with _$Trajectory {
 }
 
 @freezed
-class TrajectoryMetadata with _$TrajectoryMetadata {
+abstract class TrajectoryMetadata with _$TrajectoryMetadata {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory TrajectoryMetadata({
     required String collector,

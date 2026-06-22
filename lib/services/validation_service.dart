@@ -21,30 +21,40 @@ class DataQualityValidator {
       );
     }
 
+    // Per-sensor rows (Format A): analyse the accelerometer stream alone.
+    final accel = imuReadings.where((r) => r.sensor == 'accel').toList();
+    if (accel.isEmpty) {
+      return const DataQualityScore(
+        score: 0,
+        issues: ['Critical Error: no accelerometer rows in IMU dataset'],
+        isValid: false,
+      );
+    }
+
     // --- CHECK 1: High-Performance IMU Frequency & Jitter Analysis ---
     double totalGap = 0;
     double maxGap = 0;
     int jitterCount = 0;
-    
-    for (int i = 0; i < imuReadings.length - 1; i++) {
-      final gap = (imuReadings[i + 1].ts - imuReadings[i].ts).toDouble();
+
+    for (int i = 0; i < accel.length - 1; i++) {
+      final gap = (accel[i + 1].ts - accel[i].ts).toDouble();
       totalGap += gap;
       if (gap > maxGap) maxGap = gap;
-      
+
       // Target is ~6.67ms (150Hz). If a gap exceeds 20ms, a frame drop occurred.
       if (gap > 20.0) {
         jitterCount++;
       }
     }
-    
-    final avgGap = totalGap / (imuReadings.length - 1);
-    final calculatedHz = 1000.0 / avgGap;
+
+    final avgGap = accel.length > 1 ? totalGap / (accel.length - 1) : 0.0;
+    final calculatedHz = avgGap > 0 ? 1000.0 / avgGap : 0.0;
 
     if (avgGap < 4.0 || avgGap > 12.0) {
       score -= 20;
       issues.add('IMU frequency unstable: ${calculatedHz.toStringAsFixed(1)} Hz (Target: ~150Hz)');
     }
-    if (jitterCount > (imuReadings.length * 0.05)) {
+    if (jitterCount > (accel.length * 0.05)) {
       score -= 15;
       issues.add('Severe IMU packet jitter: detected $jitterCount massive gaps (Max gap: ${maxGap.toStringAsFixed(0)}ms)');
     }
@@ -72,10 +82,10 @@ class DataQualityValidator {
 
     // --- CHECK 4: Orientation-Agnostic Gravity Norm Check ---
     double sumMagnitude = 0;
-    for (final r in imuReadings) {
-      sumMagnitude += sqrt((r.ax * r.ax) + (r.ay * r.ay) + (r.az * r.az));
+    for (final r in accel) {
+      sumMagnitude += sqrt((r.x * r.x) + (r.y * r.y) + (r.z * r.z));
     }
-    final meanGravityNorm = sumMagnitude / imuReadings.length;
+    final meanGravityNorm = sumMagnitude / accel.length;
     
     if (meanGravityNorm < 9.5 || meanGravityNorm > 10.3) {
       score -= 20;

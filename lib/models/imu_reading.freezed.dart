@@ -1,6 +1,6 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
+// coverage:ignore-file
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'imu_reading.dart';
@@ -9,352 +9,282 @@ part of 'imu_reading.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
-IMUReading _$IMUReadingFromJson(Map<String, dynamic> json) {
-  return _IMUReading.fromJson(json);
-}
 
 /// @nodoc
 mixin _$IMUReading {
-  int get ts => throw _privateConstructorUsedError;
-  double get ax => throw _privateConstructorUsedError;
-  double get ay => throw _privateConstructorUsedError;
-  double get az => throw _privateConstructorUsedError;
-  double get gx => throw _privateConstructorUsedError;
-  double get gy => throw _privateConstructorUsedError;
-  double get gz => throw _privateConstructorUsedError;
-  double get mx => throw _privateConstructorUsedError;
-  double get my => throw _privateConstructorUsedError;
-  double get mz => throw _privateConstructorUsedError;
+
+ int get ts; String get sensor; double get x; double get y; double get z;
+/// Create a copy of IMUReading
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$IMUReadingCopyWith<IMUReading> get copyWith => _$IMUReadingCopyWithImpl<IMUReading>(this as IMUReading, _$identity);
 
   /// Serializes this IMUReading to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson();
 
-  /// Create a copy of IMUReading
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $IMUReadingCopyWith<IMUReading> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is IMUReading&&(identical(other.ts, ts) || other.ts == ts)&&(identical(other.sensor, sensor) || other.sensor == sensor)&&(identical(other.x, x) || other.x == x)&&(identical(other.y, y) || other.y == y)&&(identical(other.z, z) || other.z == z));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,ts,sensor,x,y,z);
+
+@override
+String toString() {
+  return 'IMUReading(ts: $ts, sensor: $sensor, x: $x, y: $y, z: $z)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $IMUReadingCopyWith<$Res> {
-  factory $IMUReadingCopyWith(
-    IMUReading value,
-    $Res Function(IMUReading) then,
-  ) = _$IMUReadingCopyWithImpl<$Res, IMUReading>;
-  @useResult
-  $Res call({
-    int ts,
-    double ax,
-    double ay,
-    double az,
-    double gx,
-    double gy,
-    double gz,
-    double mx,
-    double my,
-    double mz,
-  });
-}
+abstract mixin class $IMUReadingCopyWith<$Res>  {
+  factory $IMUReadingCopyWith(IMUReading value, $Res Function(IMUReading) _then) = _$IMUReadingCopyWithImpl;
+@useResult
+$Res call({
+ int ts, String sensor, double x, double y, double z
+});
 
+
+
+
+}
 /// @nodoc
-class _$IMUReadingCopyWithImpl<$Res, $Val extends IMUReading>
+class _$IMUReadingCopyWithImpl<$Res>
     implements $IMUReadingCopyWith<$Res> {
-  _$IMUReadingCopyWithImpl(this._value, this._then);
+  _$IMUReadingCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final IMUReading _self;
+  final $Res Function(IMUReading) _then;
 
-  /// Create a copy of IMUReading
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? ts = null,
-    Object? ax = null,
-    Object? ay = null,
-    Object? az = null,
-    Object? gx = null,
-    Object? gy = null,
-    Object? gz = null,
-    Object? mx = null,
-    Object? my = null,
-    Object? mz = null,
-  }) {
-    return _then(
-      _value.copyWith(
-            ts: null == ts
-                ? _value.ts
-                : ts // ignore: cast_nullable_to_non_nullable
-                      as int,
-            ax: null == ax
-                ? _value.ax
-                : ax // ignore: cast_nullable_to_non_nullable
-                      as double,
-            ay: null == ay
-                ? _value.ay
-                : ay // ignore: cast_nullable_to_non_nullable
-                      as double,
-            az: null == az
-                ? _value.az
-                : az // ignore: cast_nullable_to_non_nullable
-                      as double,
-            gx: null == gx
-                ? _value.gx
-                : gx // ignore: cast_nullable_to_non_nullable
-                      as double,
-            gy: null == gy
-                ? _value.gy
-                : gy // ignore: cast_nullable_to_non_nullable
-                      as double,
-            gz: null == gz
-                ? _value.gz
-                : gz // ignore: cast_nullable_to_non_nullable
-                      as double,
-            mx: null == mx
-                ? _value.mx
-                : mx // ignore: cast_nullable_to_non_nullable
-                      as double,
-            my: null == my
-                ? _value.my
-                : my // ignore: cast_nullable_to_non_nullable
-                      as double,
-            mz: null == mz
-                ? _value.mz
-                : mz // ignore: cast_nullable_to_non_nullable
-                      as double,
-          )
-          as $Val,
-    );
-  }
+/// Create a copy of IMUReading
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? ts = null,Object? sensor = null,Object? x = null,Object? y = null,Object? z = null,}) {
+  return _then(IMUReading(
+ts: null == ts ? _self.ts : ts // ignore: cast_nullable_to_non_nullable
+as int,sensor: null == sensor ? _self.sensor : sensor // ignore: cast_nullable_to_non_nullable
+as String,x: null == x ? _self.x : x // ignore: cast_nullable_to_non_nullable
+as double,y: null == y ? _self.y : y // ignore: cast_nullable_to_non_nullable
+as double,z: null == z ? _self.z : z // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
 }
 
-/// @nodoc
-abstract class _$$IMUReadingImplCopyWith<$Res>
-    implements $IMUReadingCopyWith<$Res> {
-  factory _$$IMUReadingImplCopyWith(
-    _$IMUReadingImpl value,
-    $Res Function(_$IMUReadingImpl) then,
-  ) = __$$IMUReadingImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({
-    int ts,
-    double ax,
-    double ay,
-    double az,
-    double gx,
-    double gy,
-    double gz,
-    double mx,
-    double my,
-    double mz,
-  });
 }
 
-/// @nodoc
-class __$$IMUReadingImplCopyWithImpl<$Res>
-    extends _$IMUReadingCopyWithImpl<$Res, _$IMUReadingImpl>
-    implements _$$IMUReadingImplCopyWith<$Res> {
-  __$$IMUReadingImplCopyWithImpl(
-    _$IMUReadingImpl _value,
-    $Res Function(_$IMUReadingImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of IMUReading
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? ts = null,
-    Object? ax = null,
-    Object? ay = null,
-    Object? az = null,
-    Object? gx = null,
-    Object? gy = null,
-    Object? gz = null,
-    Object? mx = null,
-    Object? my = null,
-    Object? mz = null,
-  }) {
-    return _then(
-      _$IMUReadingImpl(
-        ts: null == ts
-            ? _value.ts
-            : ts // ignore: cast_nullable_to_non_nullable
-                  as int,
-        ax: null == ax
-            ? _value.ax
-            : ax // ignore: cast_nullable_to_non_nullable
-                  as double,
-        ay: null == ay
-            ? _value.ay
-            : ay // ignore: cast_nullable_to_non_nullable
-                  as double,
-        az: null == az
-            ? _value.az
-            : az // ignore: cast_nullable_to_non_nullable
-                  as double,
-        gx: null == gx
-            ? _value.gx
-            : gx // ignore: cast_nullable_to_non_nullable
-                  as double,
-        gy: null == gy
-            ? _value.gy
-            : gy // ignore: cast_nullable_to_non_nullable
-                  as double,
-        gz: null == gz
-            ? _value.gz
-            : gz // ignore: cast_nullable_to_non_nullable
-                  as double,
-        mx: null == mx
-            ? _value.mx
-            : mx // ignore: cast_nullable_to_non_nullable
-                  as double,
-        my: null == my
-            ? _value.my
-            : my // ignore: cast_nullable_to_non_nullable
-                  as double,
-        mz: null == mz
-            ? _value.mz
-            : mz // ignore: cast_nullable_to_non_nullable
-                  as double,
-      ),
-    );
-  }
+/// Adds pattern-matching-related methods to [IMUReading].
+extension IMUReadingPatterns on IMUReading {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _IMUReading value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _IMUReading() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _IMUReading value)  $default,){
+final _that = this;
+switch (_that) {
+case _IMUReading():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _IMUReading value)?  $default,){
+final _that = this;
+switch (_that) {
+case _IMUReading() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int ts,  String sensor,  double x,  double y,  double z)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _IMUReading() when $default != null:
+return $default(_that.ts,_that.sensor,_that.x,_that.y,_that.z);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int ts,  String sensor,  double x,  double y,  double z)  $default,) {final _that = this;
+switch (_that) {
+case _IMUReading():
+return $default(_that.ts,_that.sensor,_that.x,_that.y,_that.z);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int ts,  String sensor,  double x,  double y,  double z)?  $default,) {final _that = this;
+switch (_that) {
+case _IMUReading() when $default != null:
+return $default(_that.ts,_that.sensor,_that.x,_that.y,_that.z);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$IMUReadingImpl implements _IMUReading {
-  const _$IMUReadingImpl({
-    required this.ts,
-    required this.ax,
-    required this.ay,
-    required this.az,
-    required this.gx,
-    required this.gy,
-    required this.gz,
-    required this.mx,
-    required this.my,
-    required this.mz,
-  });
 
-  factory _$IMUReadingImpl.fromJson(Map<String, dynamic> json) =>
-      _$$IMUReadingImplFromJson(json);
+class _IMUReading implements IMUReading {
+  const _IMUReading({required this.ts, required this.sensor, required this.x, required this.y, required this.z});
+  factory _IMUReading.fromJson(Map<String, dynamic> json) => _$IMUReadingFromJson(json);
 
-  @override
-  final int ts;
-  @override
-  final double ax;
-  @override
-  final double ay;
-  @override
-  final double az;
-  @override
-  final double gx;
-  @override
-  final double gy;
-  @override
-  final double gz;
-  @override
-  final double mx;
-  @override
-  final double my;
-  @override
-  final double mz;
+@override final  int ts;
+@override final  String sensor;
+@override final  double x;
+@override final  double y;
+@override final  double z;
 
-  @override
-  String toString() {
-    return 'IMUReading(ts: $ts, ax: $ax, ay: $ay, az: $az, gx: $gx, gy: $gy, gz: $gz, mx: $mx, my: $my, mz: $mz)';
-  }
+/// Create a copy of IMUReading
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$IMUReadingCopyWith<_IMUReading> get copyWith => __$IMUReadingCopyWithImpl<_IMUReading>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$IMUReadingImpl &&
-            (identical(other.ts, ts) || other.ts == ts) &&
-            (identical(other.ax, ax) || other.ax == ax) &&
-            (identical(other.ay, ay) || other.ay == ay) &&
-            (identical(other.az, az) || other.az == az) &&
-            (identical(other.gx, gx) || other.gx == gx) &&
-            (identical(other.gy, gy) || other.gy == gy) &&
-            (identical(other.gz, gz) || other.gz == gz) &&
-            (identical(other.mx, mx) || other.mx == mx) &&
-            (identical(other.my, my) || other.my == my) &&
-            (identical(other.mz, mz) || other.mz == mz));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, ts, ax, ay, az, gx, gy, gz, mx, my, mz);
-
-  /// Create a copy of IMUReading
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$IMUReadingImplCopyWith<_$IMUReadingImpl> get copyWith =>
-      __$$IMUReadingImplCopyWithImpl<_$IMUReadingImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$IMUReadingImplToJson(this);
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$IMUReadingToJson(this, );
 }
 
-abstract class _IMUReading implements IMUReading {
-  const factory _IMUReading({
-    required final int ts,
-    required final double ax,
-    required final double ay,
-    required final double az,
-    required final double gx,
-    required final double gy,
-    required final double gz,
-    required final double mx,
-    required final double my,
-    required final double mz,
-  }) = _$IMUReadingImpl;
-
-  factory _IMUReading.fromJson(Map<String, dynamic> json) =
-      _$IMUReadingImpl.fromJson;
-
-  @override
-  int get ts;
-  @override
-  double get ax;
-  @override
-  double get ay;
-  @override
-  double get az;
-  @override
-  double get gx;
-  @override
-  double get gy;
-  @override
-  double get gz;
-  @override
-  double get mx;
-  @override
-  double get my;
-  @override
-  double get mz;
-
-  /// Create a copy of IMUReading
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$IMUReadingImplCopyWith<_$IMUReadingImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IMUReading&&(identical(other.ts, ts) || other.ts == ts)&&(identical(other.sensor, sensor) || other.sensor == sensor)&&(identical(other.x, x) || other.x == x)&&(identical(other.y, y) || other.y == y)&&(identical(other.z, z) || other.z == z));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,ts,sensor,x,y,z);
+
+@override
+String toString() {
+  return 'IMUReading(ts: $ts, sensor: $sensor, x: $x, y: $y, z: $z)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$IMUReadingCopyWith<$Res> implements $IMUReadingCopyWith<$Res> {
+  factory _$IMUReadingCopyWith(_IMUReading value, $Res Function(_IMUReading) _then) = __$IMUReadingCopyWithImpl;
+@override @useResult
+$Res call({
+ int ts, String sensor, double x, double y, double z
+});
+
+
+
+
+}
+/// @nodoc
+class __$IMUReadingCopyWithImpl<$Res>
+    implements _$IMUReadingCopyWith<$Res> {
+  __$IMUReadingCopyWithImpl(this._self, this._then);
+
+  final _IMUReading _self;
+  final $Res Function(_IMUReading) _then;
+
+/// Create a copy of IMUReading
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? ts = null,Object? sensor = null,Object? x = null,Object? y = null,Object? z = null,}) {
+  return _then(_IMUReading(
+ts: null == ts ? _self.ts : ts // ignore: cast_nullable_to_non_nullable
+as int,sensor: null == sensor ? _self.sensor : sensor // ignore: cast_nullable_to_non_nullable
+as String,x: null == x ? _self.x : x // ignore: cast_nullable_to_non_nullable
+as double,y: null == y ? _self.y : y // ignore: cast_nullable_to_non_nullable
+as double,z: null == z ? _self.z : z // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+
+}
+
+// dart format on
