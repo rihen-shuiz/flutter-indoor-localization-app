@@ -173,6 +173,42 @@ class _RecordingScreenState extends State<RecordingScreen> {
     }
   }
 
+  Future<void> _calibrateImu() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 16),
+            Expanded(child: Text('Hold the phone still…')),
+          ],
+        ),
+      ),
+    );
+
+    final result = await imuService.calibrate();
+
+    if (!mounted) return;
+    Navigator.of(context).pop(); // close the dialog
+
+    final msg = result.ok
+        ? 'Calibrated (${result.samples} samples) — '
+            'gyro bias (${result.gyroBiasX.toStringAsFixed(4)}, '
+            '${result.gyroBiasY.toStringAsFixed(4)}, '
+            '${result.gyroBiasZ.toStringAsFixed(4)}), '
+            '|a|=${result.restAccelNorm.toStringAsFixed(2)} m/s²'
+        : 'Calibration failed — make sure sensors are running.';
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: result.ok ? Colors.green : Colors.red,
+      ),
+    );
+  }
+
   void _markTurn() {
     if (!isRecording || gtService.pathComplete) return;
 
@@ -257,12 +293,20 @@ class _RecordingScreenState extends State<RecordingScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if (!isRecording)
+                  if (!isRecording) ...[
+                    ElevatedButton(
+                      onPressed: _calibrateImu,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueGrey),
+                      child: Text(imuService.isCalibrated
+                          ? 'RECALIBRATE'
+                          : 'CALIBRATE'),
+                    ),
                     ElevatedButton(
                       onPressed: _startRecording,
                       child: const Text('START RECORDING'),
-                    )
-                  else ...[
+                    ),
+                  ] else ...[
                     ElevatedButton(
                       onPressed: gtService.pathComplete ? null : _markTurn,
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
