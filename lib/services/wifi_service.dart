@@ -13,6 +13,13 @@ class WiFiService {
   final List<WiFiReading> _recordedScans = [];
   Timer? _scanTimer;
   bool isRecording = false;
+
+  // Offset to map AP.timestamp (microseconds since boot) → wall-clock epoch us.
+  // Set once from the freshest AP in the first scan that reports timestamps.
+  int? _bootEpochUs;
+
+  // Last boot-relative timestamp seen per BSSID, to drop stale cached repeats.
+  final Map<String, int> _lastSeenByBssid = {};
   
   // Cache of the latest discovered Access Points
   List<WiFiAccessPoint> discoveredAPs = [];
@@ -88,6 +95,8 @@ class WiFiService {
     if (isRecording) return; // Guard against duplicate timer generation
 
     _recordedScans.clear();
+    _lastSeenByBssid.clear();
+    _bootEpochUs = null;
     isRecording = true;
     
     // Execute immediately on startup
@@ -114,18 +123,41 @@ class WiFiService {
       }
 
       final aps = await scanNetworks();
-      final ts = DateTime.now().millisecondsSinceEpoch;
-      
+      final nowUs = DateTime.now().microsecondsSinceEpoch;
+      final scanTs = nowUs ~/ 1000;
+
+      // Calibrate boot→epoch offset once, using the freshest AP as "≈ now".
+      if (_bootEpochUs == null) {
+        final stamps = aps
+            .map((a) => a.timestamp)
+            .whereType<int>()
+            .toList(growable: false);
+        if (stamps.isNotEmpty) {
+          _bootEpochUs = nowUs - stamps.reduce((a, b) => a > b ? a : b);
+        }
+      }
+
       for (final ap in aps) {
-        final scan = WiFiReading(
-          ts: ts,
-          bssid: ap.bssid,
-          ssid: ap.ssid.isEmpty ? 'Hidden Network' : ap.ssid,
-          rssi: ap.level,  // Signal strength in dBm
-          freq: ap.frequency,
+        final bootTs = ap.timestamp; // microseconds since boot, may be null
+
+        // Skip cached repeats: same AP, same last-seen as previous cycle.
+        if (bootTs != null && _lastSeenByBssid[ap.bssid] == bootTs) continue;
+        if (bootTs != null) _lastSeenByBssid[ap.bssid] = bootTs;
+
+        final lastSeenTs = (bootTs != null && _bootEpochUs != null)
+            ? (_bootEpochUs! + bootTs) ~/ 1000
+            : scanTs; // fallback when platform omits the timestamp
+
+        _recordedScans.add(
+          WiFiReading(
+            scanTs: scanTs,
+            lastSeenTs: lastSeenTs,
+            bssid: ap.bssid,
+            ssid: ap.ssid.isEmpty ? 'Hidden Network' : ap.ssid,
+            rssi: ap.level, // Signal strength in dBm
+            freq: ap.frequency,
+          ),
         );
-        
-        _recordedScans.add(scan);
       }
       _notifyListeners();
     } catch (e) {

@@ -37,7 +37,7 @@ class CsvExportService {
     final sortedImu = List<IMUReading>.from(imuReadings)
       ..sort((a, b) => a.ts.compareTo(b.ts));
     final sortedWifi = List<WiFiReading>.from(wifiScans)
-      ..sort((a, b) => a.ts.compareTo(b.ts));
+      ..sort((a, b) => a.lastSeenTs.compareTo(b.lastSeenTs));
     final sortedGt = List<GTWaypoint>.from(gtWaypoints)
       ..sort((a, b) => a.ts.compareTo(b.ts));
 
@@ -80,10 +80,11 @@ class CsvExportService {
   }
 
   static String _buildWifiCsv(List<WiFiReading> readings) {
-    final buffer = StringBuffer('ts,bssid,ssid,rssi,freq\n');
+    final buffer = StringBuffer('scanTs,lastSeenTs,bssid,ssid,rssi,freq\n');
     for (final r in readings) {
       buffer.writeln(
-        '${r.ts},${_csvField(r.bssid)},${_csvField(r.ssid)},${r.rssi},${r.freq}',
+        '${r.scanTs},${r.lastSeenTs},'
+        '${_csvField(r.bssid)},${_csvField(r.ssid)},${r.rssi},${r.freq}',
       );
     }
     return buffer.toString();

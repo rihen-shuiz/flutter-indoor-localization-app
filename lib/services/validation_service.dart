@@ -108,8 +108,8 @@ class DataQualityValidator {
 
     // --- CHECK 6: Chronological Synchronization Matrix ---
     if (wifiReadings.isNotEmpty) {
-      final bool logsOverlap = (wifiReadings.first.ts >= imuReadings.first.ts) && 
-                              (wifiReadings.last.ts <= imuReadings.last.ts);
+      final bool logsOverlap = (wifiReadings.first.lastSeenTs >= imuReadings.first.ts) &&
+                              (wifiReadings.last.lastSeenTs <= imuReadings.last.ts);
       if (!logsOverlap) {
         score -= 30;
         issues.add('Critical Time Sync Error: Wi-Fi sample timestamps do not align inside IMU timeline boundaries');

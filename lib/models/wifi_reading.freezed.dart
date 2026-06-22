@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$WiFiReading {
 
- int get ts; String get bssid; String get ssid; int get rssi; int get freq;
+ int get scanTs; int get lastSeenTs; String get bssid; String get ssid; int get rssi; int get freq;
 /// Create a copy of WiFiReading
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $WiFiReadingCopyWith<WiFiReading> get copyWith => _$WiFiReadingCopyWithImpl<WiFi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WiFiReading&&(identical(other.ts, ts) || other.ts == ts)&&(identical(other.bssid, bssid) || other.bssid == bssid)&&(identical(other.ssid, ssid) || other.ssid == ssid)&&(identical(other.rssi, rssi) || other.rssi == rssi)&&(identical(other.freq, freq) || other.freq == freq));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WiFiReading&&(identical(other.scanTs, scanTs) || other.scanTs == scanTs)&&(identical(other.lastSeenTs, lastSeenTs) || other.lastSeenTs == lastSeenTs)&&(identical(other.bssid, bssid) || other.bssid == bssid)&&(identical(other.ssid, ssid) || other.ssid == ssid)&&(identical(other.rssi, rssi) || other.rssi == rssi)&&(identical(other.freq, freq) || other.freq == freq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ts,bssid,ssid,rssi,freq);
+int get hashCode => Object.hash(runtimeType,scanTs,lastSeenTs,bssid,ssid,rssi,freq);
 
 @override
 String toString() {
-  return 'WiFiReading(ts: $ts, bssid: $bssid, ssid: $ssid, rssi: $rssi, freq: $freq)';
+  return 'WiFiReading(scanTs: $scanTs, lastSeenTs: $lastSeenTs, bssid: $bssid, ssid: $ssid, rssi: $rssi, freq: $freq)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $WiFiReadingCopyWith<$Res>  {
   factory $WiFiReadingCopyWith(WiFiReading value, $Res Function(WiFiReading) _then) = _$WiFiReadingCopyWithImpl;
 @useResult
 $Res call({
- int ts, String bssid, String ssid, int rssi, int freq
+ int scanTs, int lastSeenTs, String bssid, String ssid, int rssi, int freq
 });
 
 
@@ -66,9 +66,10 @@ class _$WiFiReadingCopyWithImpl<$Res>
 
 /// Create a copy of WiFiReading
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? ts = null,Object? bssid = null,Object? ssid = null,Object? rssi = null,Object? freq = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? scanTs = null,Object? lastSeenTs = null,Object? bssid = null,Object? ssid = null,Object? rssi = null,Object? freq = null,}) {
   return _then(WiFiReading(
-ts: null == ts ? _self.ts : ts // ignore: cast_nullable_to_non_nullable
+scanTs: null == scanTs ? _self.scanTs : scanTs // ignore: cast_nullable_to_non_nullable
+as int,lastSeenTs: null == lastSeenTs ? _self.lastSeenTs : lastSeenTs // ignore: cast_nullable_to_non_nullable
 as int,bssid: null == bssid ? _self.bssid : bssid // ignore: cast_nullable_to_non_nullable
 as String,ssid: null == ssid ? _self.ssid : ssid // ignore: cast_nullable_to_non_nullable
 as String,rssi: null == rssi ? _self.rssi : rssi // ignore: cast_nullable_to_non_nullable
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int ts,  String bssid,  String ssid,  int rssi,  int freq)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int scanTs,  int lastSeenTs,  String bssid,  String ssid,  int rssi,  int freq)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WiFiReading() when $default != null:
-return $default(_that.ts,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
+return $default(_that.scanTs,_that.lastSeenTs,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.ts,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int ts,  String bssid,  String ssid,  int rssi,  int freq)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int scanTs,  int lastSeenTs,  String bssid,  String ssid,  int rssi,  int freq)  $default,) {final _that = this;
 switch (_that) {
 case _WiFiReading():
-return $default(_that.ts,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
+return $default(_that.scanTs,_that.lastSeenTs,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.ts,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int ts,  String bssid,  String ssid,  int rssi,  int freq)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int scanTs,  int lastSeenTs,  String bssid,  String ssid,  int rssi,  int freq)?  $default,) {final _that = this;
 switch (_that) {
 case _WiFiReading() when $default != null:
-return $default(_that.ts,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
+return $default(_that.scanTs,_that.lastSeenTs,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
   return null;
 
 }
@@ -214,10 +215,11 @@ return $default(_that.ts,_that.bssid,_that.ssid,_that.rssi,_that.freq);case _:
 @JsonSerializable()
 
 class _WiFiReading implements WiFiReading {
-  const _WiFiReading({required this.ts, required this.bssid, required this.ssid, required this.rssi, required this.freq});
+  const _WiFiReading({required this.scanTs, required this.lastSeenTs, required this.bssid, required this.ssid, required this.rssi, required this.freq});
   factory _WiFiReading.fromJson(Map<String, dynamic> json) => _$WiFiReadingFromJson(json);
 
-@override final  int ts;
+@override final  int scanTs;
+@override final  int lastSeenTs;
 @override final  String bssid;
 @override final  String ssid;
 @override final  int rssi;
@@ -236,16 +238,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WiFiReading&&(identical(other.ts, ts) || other.ts == ts)&&(identical(other.bssid, bssid) || other.bssid == bssid)&&(identical(other.ssid, ssid) || other.ssid == ssid)&&(identical(other.rssi, rssi) || other.rssi == rssi)&&(identical(other.freq, freq) || other.freq == freq));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WiFiReading&&(identical(other.scanTs, scanTs) || other.scanTs == scanTs)&&(identical(other.lastSeenTs, lastSeenTs) || other.lastSeenTs == lastSeenTs)&&(identical(other.bssid, bssid) || other.bssid == bssid)&&(identical(other.ssid, ssid) || other.ssid == ssid)&&(identical(other.rssi, rssi) || other.rssi == rssi)&&(identical(other.freq, freq) || other.freq == freq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ts,bssid,ssid,rssi,freq);
+int get hashCode => Object.hash(runtimeType,scanTs,lastSeenTs,bssid,ssid,rssi,freq);
 
 @override
 String toString() {
-  return 'WiFiReading(ts: $ts, bssid: $bssid, ssid: $ssid, rssi: $rssi, freq: $freq)';
+  return 'WiFiReading(scanTs: $scanTs, lastSeenTs: $lastSeenTs, bssid: $bssid, ssid: $ssid, rssi: $rssi, freq: $freq)';
 }
 
 
@@ -256,7 +258,7 @@ abstract mixin class _$WiFiReadingCopyWith<$Res> implements $WiFiReadingCopyWith
   factory _$WiFiReadingCopyWith(_WiFiReading value, $Res Function(_WiFiReading) _then) = __$WiFiReadingCopyWithImpl;
 @override @useResult
 $Res call({
- int ts, String bssid, String ssid, int rssi, int freq
+ int scanTs, int lastSeenTs, String bssid, String ssid, int rssi, int freq
 });
 
 
@@ -273,9 +275,10 @@ class __$WiFiReadingCopyWithImpl<$Res>
 
 /// Create a copy of WiFiReading
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? ts = null,Object? bssid = null,Object? ssid = null,Object? rssi = null,Object? freq = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? scanTs = null,Object? lastSeenTs = null,Object? bssid = null,Object? ssid = null,Object? rssi = null,Object? freq = null,}) {
   return _then(_WiFiReading(
-ts: null == ts ? _self.ts : ts // ignore: cast_nullable_to_non_nullable
+scanTs: null == scanTs ? _self.scanTs : scanTs // ignore: cast_nullable_to_non_nullable
+as int,lastSeenTs: null == lastSeenTs ? _self.lastSeenTs : lastSeenTs // ignore: cast_nullable_to_non_nullable
 as int,bssid: null == bssid ? _self.bssid : bssid // ignore: cast_nullable_to_non_nullable
 as String,ssid: null == ssid ? _self.ssid : ssid // ignore: cast_nullable_to_non_nullable
 as String,rssi: null == rssi ? _self.rssi : rssi // ignore: cast_nullable_to_non_nullable

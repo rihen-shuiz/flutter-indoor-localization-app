@@ -7,7 +7,8 @@ part of 'wifi_reading.dart';
 // **************************************************************************
 
 _WiFiReading _$WiFiReadingFromJson(Map<String, dynamic> json) => _WiFiReading(
-  ts: (json['ts'] as num).toInt(),
+  scanTs: (json['scanTs'] as num).toInt(),
+  lastSeenTs: (json['lastSeenTs'] as num).toInt(),
   bssid: json['bssid'] as String,
   ssid: json['ssid'] as String,
   rssi: (json['rssi'] as num).toInt(),
@@ -16,7 +17,8 @@ _WiFiReading _$WiFiReadingFromJson(Map<String, dynamic> json) => _WiFiReading(
 
 Map<String, dynamic> _$WiFiReadingToJson(_WiFiReading instance) =>
     <String, dynamic>{
-      'ts': instance.ts,
+      'scanTs': instance.scanTs,
+      'lastSeenTs': instance.lastSeenTs,
       'bssid': instance.bssid,
       'ssid': instance.ssid,
       'rssi': instance.rssi,
