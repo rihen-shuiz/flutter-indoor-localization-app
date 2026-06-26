@@ -43,43 +43,41 @@ class IMUService extends ChangeNotifier {
 
     print('[IMU] Starting sensor listeners...');
 
-    _accelSubscription =
-        accelerometerEventStream(samplingPeriod: samplingPeriod)
-            .listen((AccelerometerEvent event) {
-      ax = event.x;
-      ay = event.y;
-      az = event.z;
-      if (_isCalibrating) {
-        _calibAccelNorm.add(
-            sqrt(event.x * event.x + event.y * event.y + event.z * event.z));
-      }
-      _record('accel', event.x - accelBiasX, event.y - accelBiasY,
-          event.z - accelBiasZ);
-      _notifyListeners();
+    _accelSubscription = accelerometerEventStream(samplingPeriod: samplingPeriod).listen(
+      (AccelerometerEvent event) {
+        ax = event.x;
+        ay = event.y;
+        az = event.z;
+        if (_isCalibrating) {
+          _calibAccelNorm.add(
+              sqrt(event.x * event.x + event.y * event.y + event.z * event.z));
+        }
+        _record('accel', event.x - accelBiasX, event.y - accelBiasY,
+            event.z - accelBiasZ);
+        _notifyListeners();
     });
 
-    _gyroSubscription = gyroscopeEventStream(samplingPeriod: samplingPeriod)
-        .listen((GyroscopeEvent event) {
-      gx = event.x;
-      gy = event.y;
-      gz = event.z;
-      if (_isCalibrating) {
-        _calibGyro.add((event.x, event.y, event.z));
-      }
-      // Recorded gyro is bias-corrected; live gx/gy/gz stay raw for the readout.
-      _record('gyro', event.x - gyroBiasX, event.y - gyroBiasY,
-          event.z - gyroBiasZ);
-      _notifyListeners();
+    _gyroSubscription = gyroscopeEventStream(samplingPeriod: samplingPeriod).listen(
+      (GyroscopeEvent event) {
+        gx = event.x;
+        gy = event.y;
+        gz = event.z;
+        if (_isCalibrating) {
+          _calibGyro.add((event.x, event.y, event.z));
+        }
+        // Recorded gyro is bias-corrected; live gx/gy/gz stay raw for the readout.
+        _record('gyro', event.x - gyroBiasX, event.y - gyroBiasY,
+            event.z - gyroBiasZ);
+        _notifyListeners();
     });
 
-    _magSubscription =
-        magnetometerEventStream(samplingPeriod: samplingPeriod)
-            .listen((MagnetometerEvent event) {
-      mx = event.x;
-      my = event.y;
-      mz = event.z;
-      _record('mag', event.x, event.y, event.z);
-      _notifyListeners();
+    _magSubscription = magnetometerEventStream(samplingPeriod: samplingPeriod).listen(
+      (MagnetometerEvent event) {
+        mx = event.x;
+        my = event.y;
+        mz = event.z;
+        _record('mag', event.x, event.y, event.z);
+        _notifyListeners();
     });
   }
 

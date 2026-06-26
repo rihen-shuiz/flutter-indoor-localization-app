@@ -1,5 +1,6 @@
 import 'package:wifi_scan/wifi_scan.dart';
 import 'dart:async';
+import 'package:system_clock/system_clock.dart';
 
 import 'package:flutter_indoor_localization_app/models/wifi_reading.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -148,10 +149,12 @@ class WiFiService {
             ? (_bootEpochUs! + bootTs) ~/ 1000
             : scanTs; // fallback when platform omits the timestamp
 
+        final apLastSeenTs = SystemClock.elapsedRealtime().inMicroseconds;// - (bootTs ?? 0);
         _recordedScans.add(
           WiFiReading(
             scanTs: scanTs,
-            lastSeenTs: lastSeenTs,
+            // lastSeenTs: lastSeenTs,
+            lastSeenTs: apLastSeenTs ~/ 1000, // Convert to milliseconds
             bssid: ap.bssid,
             ssid: ap.ssid.isEmpty ? 'Hidden Network' : ap.ssid,
             rssi: ap.level, // Signal strength in dBm

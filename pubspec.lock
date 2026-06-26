@@ -845,6 +845,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  system_clock:
+    dependency: "direct main"
+    description:
+      name: system_clock
+      sha256: "7038993add5a6f06558582e0965752f75951e24695c988eb638e6996399c497b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   term_glyph:
     dependency: transitive
     description:

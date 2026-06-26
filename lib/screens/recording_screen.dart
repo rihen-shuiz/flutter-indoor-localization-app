@@ -78,9 +78,9 @@ class _RecordingScreenState extends State<RecordingScreen> {
         throw Exception('WiFi permissions denied. Cannot record scans.');
       }
       
-      imuService.startRecording();
+      // imuService.startRecording();
       wifiService.startRecording();
-      gtService.initializeSession(_selectedTrajectory!);
+      // gtService.initializeSession(_selectedTrajectory!);
     } catch(e) {
       setState(() => isRecording = false);
       ScaffoldMessenger.of(context).showSnackBar(
