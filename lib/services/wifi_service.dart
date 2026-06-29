@@ -119,12 +119,7 @@ class WiFiService {
       }
 
       final aps = await scanNetworks();
-      final scanTs = DateTime.now().millisecondsSinceEpoch; // Wall-clock timestamp in milliseconds
-
-      // convert boot time to wall-clock time offset for AP timestamps
-      final bootTimeMs = SystemClock.elapsedRealtime().inMicroseconds;
-      final wallTimeMs = DateTime.now().microsecondsSinceEpoch;
-      final offset = wallTimeMs - bootTimeMs;
+      final scanTs = SystemClock.elapsedRealtime().inMilliseconds;
 
       for (final ap in aps) {
         final bootTs = ap.timestamp; // microseconds since boot, may be null
@@ -134,7 +129,7 @@ class WiFiService {
         if (bootTs != null) _lastSeenByBssid[ap.bssid] = bootTs;
 
         final lastSeenTs = (bootTs != null)
-            ? (offset + bootTs) ~/ 1000
+            ? (bootTs ~/ 1000)
             : scanTs; // fallback when ap.timestamp is null
 
         _recordedScans.add(

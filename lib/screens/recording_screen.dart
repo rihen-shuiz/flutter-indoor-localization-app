@@ -13,7 +13,7 @@ import 'package:flutter_indoor_localization_app/services/ground_truth_service.da
 import 'package:share_plus/share_plus.dart';
 
 class RecordingScreen extends StatefulWidget {
-  const RecordingScreen({Key? key}) : super(key: key);
+  const RecordingScreen({super.key});
 
   @override
   State<RecordingScreen> createState() => _RecordingScreenState();
@@ -82,6 +82,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
       wifiService.startRecording();
       // gtService.initializeSession(_selectedTrajectory!);
     } catch(e) {
+      if(!mounted) return;
       setState(() => isRecording = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error starting recording: $e'), 
@@ -97,6 +98,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
       }
     });
     
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Recording started')),
     );
@@ -127,21 +129,17 @@ class _RecordingScreenState extends State<RecordingScreen> {
         gtWaypoints: gtWaypoints,
       );
 
-      if (!mounted) return;
-
-      if (exportResult != null){
-        final files = [
-          XFile(exportResult.imuPath),
-          XFile(exportResult.wifiPath),
-          XFile(exportResult.trajectoryPath),
-        ];
-        await SharePlus.instance.share(
-          ShareParams(
-            files: files, 
-            text: 'All input readings from the session: $trajectoryName'
-          )
-        );
-      }
+      final files = [
+        XFile(exportResult.imuPath),
+        XFile(exportResult.wifiPath),
+        XFile(exportResult.trajectoryPath),
+      ];
+      await SharePlus.instance.share(
+        ShareParams(
+          files: files, 
+          text: 'All input readings from the session: $trajectoryName'
+        )
+      );
 
       if (!mounted) return;
 
@@ -310,7 +308,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
                     ElevatedButton(
                       onPressed: gtService.pathComplete ? null : _markTurn,
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                      child: Text(gtService.pathComplete ? 'PATH DONE' : 'TURN'),
+                      child: Text(gtService.pathComplete ? 'PATH DONE' : 'NEXT SEGMENT'),
                     ),
                     ElevatedButton(
                       onPressed: _isExporting ? null : _stopRecording,
@@ -381,7 +379,7 @@ class _GroundTruthStatusCard extends StatelessWidget {
 class _SensorStatusCard extends StatelessWidget {
   final Map<String, double> readings;
 
-  const _SensorStatusCard({Key? key, required this.readings}) : super(key: key);
+  const _SensorStatusCard({required this.readings});
 
   @override
   Widget build(BuildContext context) {
