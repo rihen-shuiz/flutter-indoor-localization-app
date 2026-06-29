@@ -15,10 +15,6 @@ class WiFiService {
   Timer? _scanTimer;
   bool isRecording = false;
 
-  // Offset to map AP.timestamp (microseconds since boot) → wall-clock epoch us.
-  // Set once from the freshest AP in the first scan that reports timestamps.
-  int? _bootEpochUs;
-
   // Last boot-relative timestamp seen per BSSID, to drop stale cached repeats.
   final Map<String, int> _lastSeenByBssid = {};
   
@@ -97,7 +93,6 @@ class WiFiService {
 
     _recordedScans.clear();
     _lastSeenByBssid.clear();
-    _bootEpochUs = null;
     isRecording = true;
     
     // Execute immediately on startup
@@ -124,19 +119,12 @@ class WiFiService {
       }
 
       final aps = await scanNetworks();
-      final nowUs = DateTime.now().microsecondsSinceEpoch;
-      final scanTs = nowUs ~/ 1000;
+      final scanTs = DateTime.now().millisecondsSinceEpoch; // Wall-clock timestamp in milliseconds
 
-      // Calibrate boot→epoch offset once, using the freshest AP as "≈ now".
-      if (_bootEpochUs == null) {
-        final stamps = aps
-            .map((a) => a.timestamp)
-            .whereType<int>()
-            .toList(growable: false);
-        if (stamps.isNotEmpty) {
-          _bootEpochUs = nowUs - stamps.reduce((a, b) => a > b ? a : b);
-        }
-      }
+      // convert boot time to wall-clock time offset for AP timestamps
+      final bootTimeMs = SystemClock.elapsedRealtime().inMicroseconds;
+      final wallTimeMs = DateTime.now().microsecondsSinceEpoch;
+      final offset = wallTimeMs - bootTimeMs;
 
       for (final ap in aps) {
         final bootTs = ap.timestamp; // microseconds since boot, may be null
@@ -145,19 +133,17 @@ class WiFiService {
         if (bootTs != null && _lastSeenByBssid[ap.bssid] == bootTs) continue;
         if (bootTs != null) _lastSeenByBssid[ap.bssid] = bootTs;
 
-        final lastSeenTs = (bootTs != null && _bootEpochUs != null)
-            ? (_bootEpochUs! + bootTs) ~/ 1000
-            : scanTs; // fallback when platform omits the timestamp
+        final lastSeenTs = (bootTs != null)
+            ? (offset + bootTs) ~/ 1000
+            : scanTs; // fallback when ap.timestamp is null
 
-        final apLastSeenTs = SystemClock.elapsedRealtime().inMicroseconds;// - (bootTs ?? 0);
         _recordedScans.add(
           WiFiReading(
             scanTs: scanTs,
-            // lastSeenTs: lastSeenTs,
-            lastSeenTs: apLastSeenTs ~/ 1000, // Convert to milliseconds
+            lastSeenTs: lastSeenTs,
             bssid: ap.bssid,
             ssid: ap.ssid.isEmpty ? 'Hidden Network' : ap.ssid,
-            rssi: ap.level, // Signal strength in dBm
+            rssi: ap.level,
             freq: ap.frequency,
           ),
         );
